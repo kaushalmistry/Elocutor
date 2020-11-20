@@ -6,7 +6,7 @@ Created on Sat Sep  5 22:45:55 2020
 """
 
 # import Trie_Structure as trie
-import pyautogui as pag
+# import pyautogui as pag
 
 # t = trie.get_root()
 
@@ -25,21 +25,10 @@ import pyautogui as pag
 
 # print(wn.synsets('dog'))
 
-# import autocomplete
+import autocomplete
 
-# autocomplete.load()
-# x = 'y'
+autocomplete.load()
+x = input("Enter Word to see predicted words for Auto-Completion : ")
 
-# a = autocomplete.predict_currword(x, 10)
-# b = autocomplete.predict('I', 'l', 10)
-# print(a)
-# print(b)
-
-# s = " "
-# print(len(s))
-# print(s.isspace())
-
-s = [2,0,1]
-print(s.index(2))
-s = ('altleft', 'tab')
-pag.hotkey(s[0], s[1])
+a = autocomplete.predict("I", x, 10)
+print(a)

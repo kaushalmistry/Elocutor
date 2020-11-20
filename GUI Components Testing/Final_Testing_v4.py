@@ -1,6 +1,3 @@
-
-
-
 #---------------------------------------- Modules -------------------------------------------------
 import numpy as np
 import cv2
@@ -15,15 +12,6 @@ import autocomplete as autoc
 autoc.load()
 import pyttsx3 #pip install pyttsx3
 
-#-------------------------AUDIO CONTROL CENTER-------------
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-# print(voices[1].id)
-engine.setProperty('voice', voices[1].id)
-
-def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
 
 #------------------------------------- Main Window ------------------------------------------------
 root = tk.Tk()
@@ -41,9 +29,20 @@ screen_width_updated = screen_width//2
 root.geometry(f'{screen_width_updated}x{screen_height}+{screen_width_updated}+0')
 
 
-#--------------------------------------- Control Center ----------------------------------------
+#--------------------------------------- CONTROL CENTER ----------------------------------------
 # Dimensions for all frames and widgets
 
+#-------------------------AUDIO CONTROL CENTER-------------
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+# print(voices[1].id)
+engine.setProperty('voice', voices[1].id)
+
+def speak(audio):
+    engine.say(audio)
+    engine.runAndWait()
+
+# --------------- OPTIONS SELECTION --------------
 frame_selector = 0
 '''
     0 : Option Frame (Apps, Keyboard, Words, etc.)
@@ -52,7 +51,7 @@ frame_selector = 0
     3 : Frequent Words
     4 : Frequent Options
 '''
-
+#---------------- LOOK ---------------
 full_width = screen_width // 2
 keyboard_height = screen_height // 3
 title_height = screen_height // 15 - 15
@@ -66,7 +65,7 @@ apps_icon_height = app_width // 3
 frame_selection_width = remaining_width // 3
 words_frame_width = remaining_width * 2 // 3
 
-# Icon Names and Images
+# -------------- Icon Names and Images ----------------
 images = {0:'Notepad', 1:'Chrome', 2:'This PC', 3:'Calculator', 4:'You Tube', 5:'Setting', 6:'Exit'}
 icon_count = len(images.keys())
 
@@ -89,6 +88,7 @@ Overall_Color_Hash =  "#0d0c0d" #"#202020"   #"#1a1a1a"
 Text_Color_Hash = "#eaeaea"
 Text_Color = (234, 234, 234)
 Border_Color_Hash = "#757575"
+
 # Variables used in function to Open App
 icon_index = 0
 selected = 0
