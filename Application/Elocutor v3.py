@@ -17,23 +17,50 @@ import time
 import pyautogui as pag
 import autocomplete as autoc
 autoc.load()
+import os
 import pyttsx3 #pip install pyttsx3
 
 ### ---------------- Selection Method Flag ---------------------------
 Selection_Method = -1
 
-# ------------------------------------ Selection Methos Window -----------------------------------
+#-------------------------------Address Resolution-------------
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+#Resources Path
+icon_src = resource_path("images/wheelchair_person.ico")
+logo_src = resource_path("images\logo.png")
+logo_src.replace("/","\\")
+cheek_src =  resource_path("images/cheek.png")
+eye_src = resource_path("images/eye3.png")
+eyebrows_src  = resource_path("images/eyebrows3.png")
+exit_src  = resource_path("images/exit3.png")
+
+logos_pollos_src = resource_path("Icons/logos_pollos.png")
+face_landmarks_module_src = resource_path("../Face_Landmarks/shape_predictor_68_face_landmarks.dat")
+friends_dataset_src = resource_path("Files/friends_data.txt")
+
+
+# ------------------------------------ Selection Methods Window -----------------------------------
 root1 = tk.Tk()
 
 root1.title("Elocutor Home")
-root1.iconbitmap(r"Images\wheelchair_person.ico")
+root1.iconbitmap(icon_src)
 root1.geometry("600x400")
 uniform_color="#3b6dc7"
 
 
 root1.configure(background=uniform_color)
 
-photo5 = tk.PhotoImage(file = r"images/logo - Copy.png")
+photo5 = tk.PhotoImage(file = logo_src)
 photoimage5 = photo5.subsample(1, 1)
 l5 = tk.Label(root1,image = photoimage5,background=uniform_color)
 l5.pack()
@@ -65,22 +92,22 @@ def Exit():
     Selection_Method = -1
     root1.destroy()
 
-photo = tk.PhotoImage(file = r"images/cheek.png")
+photo = tk.PhotoImage(file = cheek_src)
 photoimage = photo.subsample(3, 3)
 l4 = tk.Label(root1,image = photoimage,background=uniform_color).place(x=30, y=250)
 b1 = ttk.Button(root1, text = 'Cheek', command = cheek_detection, style="TButton").place(x=10, y=340)
 
-photo1 = tk.PhotoImage(file = r"images/eye3.png") 
+photo1 = tk.PhotoImage(file = eye_src) 
 photoimage1 = photo1.subsample(3, 3)
 l5 = tk.Label(root1,image = photoimage1,background=uniform_color).place(x=180, y=250)
 b2 = ttk.Button(root1, text = 'Eye', command = eye_detection).place(x=160, y=340)
 
-photo2 = tk.PhotoImage(file = r"images/eyebrows3.png") 
+photo2 = tk.PhotoImage(file = eyebrows_src) 
 photoimage2 = photo2.subsample(3, 3)
 l6 = tk.Label(root1,image = photoimage2,background=uniform_color).place(x=330, y=250)
 b3 = ttk.Button(root1, text = 'Eyebrows', command = eyebrows_detection).place(x=310, y=340)
 
-photo3 = tk.PhotoImage(file = r"images/exit3.png") 
+photo3 = tk.PhotoImage(file = exit_src) 
 photoimage3 = photo3.subsample(3, 3)
 l7 = tk.Label(root1,image = photoimage3,background=uniform_color).place(x=480, y=250)
 b4 = ttk.Button(root1, text = 'Exit',command = Exit).place(x=460, y=340)
@@ -93,7 +120,7 @@ if Selection_Method != -1:
     #------------------------------------- Main Window ------------------------------------------------
     root = tk.Tk()
     root.title("Elocutor")
-    root.iconbitmap(r"Images\wheelchair_person.ico")
+    root.iconbitmap(icon_src)
     root.config(bg='gray')
     root.resizable(width=False, height=False)
     
@@ -113,10 +140,13 @@ if Selection_Method != -1:
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
-    
-    def speak(audio):
-        engine.say(audio)
-        engine.runAndWait()
+
+    try:
+        def speak(audio):
+            engine.say(audio)
+            engine.runAndWait()
+    except:
+        pass
     
     # --------------- OPTIONS SELECTION --------------
     frame_selector = 0
@@ -288,7 +318,7 @@ if Selection_Method != -1:
     
     #-------------------------- Labels in that frame to show real time videos and simulations -------------------------
     
-    logo= cv2.imread("Icons/logos_pollos.png")
+    logo= cv2.imread(logos_pollos_src)
     fx_val = 0.35 - 0.05*index_res
     fy_val = 0.35 - 0.05*index_res
     logo =   cv2.resize(logo, (0, 0), fx = fx_val, fy = fy_val)  
@@ -333,7 +363,7 @@ if Selection_Method != -1:
     
     # Landmarks Detector
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("../Face_Landmarks/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor(face_landmarks_module_src)
     #predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     
     # User Video
@@ -493,7 +523,7 @@ if Selection_Method != -1:
     
     
     # -------------------------- NEXT WORD PREDICTION ----------------------
-    train_data_for_next_word = r'Files\friends_data.txt'
+    train_data_for_next_word = friends_dataset_src
     first_possible_next_words = {}
     second_possible_next_words = {}
     next_word_transitions = {}
@@ -627,7 +657,8 @@ if Selection_Method != -1:
     icons = []
     
     for i in images.values():
-        ele=cv2.imread("Icons/"+i+".png")
+        images_src = resource_path("Icons/"+i+".png")
+        ele=cv2.imread(images_src)
         ele=cv2.resize(ele, (apps_icon_width, apps_icon_height))
         icons.append(ele)
     
