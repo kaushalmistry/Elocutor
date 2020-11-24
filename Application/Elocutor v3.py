@@ -18,6 +18,7 @@ import pyautogui as pag
 import autocomplete as autoc
 autoc.load()
 import os
+import sys
 import pyttsx3 #pip install pyttsx3
 
 ### ---------------- Selection Method Flag ---------------------------
@@ -55,6 +56,7 @@ root1 = tk.Tk()
 root1.title("Elocutor Home")
 root1.iconbitmap(icon_src)
 root1.geometry("600x400")
+root1.lift()
 uniform_color="#3b6dc7"
 
 
@@ -123,6 +125,7 @@ if Selection_Method != -1:
     root.iconbitmap(icon_src)
     root.config(bg='gray')
     root.resizable(width=False, height=False)
+    root.lift()
     
     # Screen Sizes
     screen_width = root.winfo_screenwidth()
@@ -172,7 +175,7 @@ if Selection_Method != -1:
     words_frame_width = remaining_width * 2 // 3
     
     # -------------- Icon Names and Images ----------------
-    images = {0:'Notepad', 1:'Chrome', 2:'This PC', 3:'Calculator', 4:'You Tube', 5:'Setting', 6:'Exit'}
+    images = {0:'Notepad', 1:'Chrome', 2:'This PC', 3:'Calculator', 4:'You Tube', 5:'Yes-No', 6:'Exit'}
     icon_count = len(images.keys())
     
     # Frame Selector Frame (Options Wali Frame BABU BHAIYA)
@@ -234,12 +237,16 @@ if Selection_Method != -1:
                     6:  {
                         }
                    }
+    
+    yes_no_options = {0:"YES", 1:"NO", 2:"Not Sure", 3:"Exit"}
+    Selected_Yes_No = ""
     '''
         Apps Number is given to switch between
             0 : Notepad
             1 : Chrome
             2 : This PC
             3 : Calculator
+            4 : Youtube on chrome
     
     '''
     
@@ -280,6 +287,7 @@ if Selection_Method != -1:
     flag_for_word_predictor = 0
     flag_app_to_menu = 0
     flag_words_window = 0
+    flag_yes_no_selected = 0
     
     # -------------- ALL FRAMES -----------------
     title_frame = tk.Frame(root, bg = Overall_Color_Hash, width = full_width, height = title_height)
@@ -357,6 +365,9 @@ if Selection_Method != -1:
     freq_title_label.place(x = (user_width//5), y = 10)
     Author_title_label.place(x = (user_width//2), y = 35)
     
+    # yes_no_label = tk.Label(freq_option_frame, background =  Overall_Color_Hash ,foreground = Text_Color_Hash, font=("Helvetica", 15))
+    # yes_no_label.place(x = (user_width//5), y = int((user_height//4)*2.5))
+    
     
     
     #---------------------------- Whole Code and Logic for app selection and User video stream--------------------------
@@ -417,6 +428,7 @@ if Selection_Method != -1:
     
     #----------------------------- Frequently used options Frame--------------------------------------------
     
+    
     Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
     
     def draw_freq_options(freq_index, freq_select, blank):
@@ -439,9 +451,6 @@ if Selection_Method != -1:
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 0
-            #cv2.rectangle(Frequent_Options, (x + th, y + th), (x + width - th, y + height - th), (255, 255, 255), -1)
-            #(int(user_height // 5) * 4)//3, int(user_width // 2)
-            #rec="Frequent Options"
             cv2.putText(Frequent_Options, "Frequent Options", (user_width // 5,(int(user_height//5)*4)//2), font_letter, font_scale, Text_Color, font_th)
             
         else:
@@ -468,6 +477,56 @@ if Selection_Method != -1:
                 cv2.putText(Frequent_Options, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
     
     
+    # --------------- YES / NO Module -------------------------
+    yes_no_array = np.full((int(user_height//2.5)*2, int(user_width), 3),Overall_Color, np.uint8)
+    
+    def draw_yes_no(freq_index, freq_select, blank):
+        global opened_apps
+        global freq_options
+        global yes_no_options
+        global flag_for_freq_options
+        global yes_no_array
+        width = int(user_width // 2)
+        height = int(user_height // 2.5)
+        
+        if freq_index % 2 == 0:
+            x = 0
+        else:
+            x = width
+        y = height * (freq_index // 2)
+        th = 3
+    
+        if blank:
+            #cv2.rectangle(Frequent_Options, (x + th, y + th), (x + width - th, y + height - th), (0, 0, 0), -1)
+            font_letter = cv2.FONT_HERSHEY_COMPLEX
+            font_scale = Universal_font_size
+            font_th = 0
+            cv2.putText(yes_no_array, "Frequent Options", (user_width // 4,(int(user_height//4)*2)//2), font_letter, font_scale, Text_Color, font_th)
+            
+        else:
+            if(flag_for_freq_options==0):
+                flag_for_freq_options+=1
+                
+                # Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
+            # Text settings
+            text = yes_no_options[freq_index]
+            font_letter = cv2.FONT_HERSHEY_COMPLEX
+            font_scale = Universal_font_size
+            font_th = 1
+            text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
+            width_text, height_text = text_size[0], text_size[1]
+            text_x = int((width - width_text) / 2) + x
+            text_y = int((height + height_text) / 2) + y
+            #rec="Frequent Options"
+            #cv2.putText(Frequent_Options, "Frequent Options", (user_width // 5,(int(user_height//5)*4)//2), font_letter, font_scale, (0, 0, 0), font_th)
+            if freq_select is True:
+                cv2.rectangle(yes_no_array, (x + th, y + th), (x + width - th, y + height - th), selection_color, -1)
+                cv2.putText(yes_no_array, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
+            else:
+                cv2.rectangle(yes_no_array, (x + th, y + th), (x + width - th, y + height - th), Overall_Color, -1)
+                cv2.putText(yes_no_array, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
+    
+    
     #--------------------------------- Predicted Words Frame --------------------------
     words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
     
@@ -475,6 +534,8 @@ if Selection_Method != -1:
         global predicted_words
         global flag_for_word_predictor
         global words
+        global Selected_Yes_No
+        global flag_yes_no_selected
         width = int(words_frame_width // 2)
         height = int(user_height // 5)
         if word_index % 2 == 0:
@@ -485,17 +546,19 @@ if Selection_Method != -1:
         th = 3
         
         if blank:
-            if(flag_for_word_predictor==0):
-                flag_for_word_predictor=(flag_for_word_predictor+1)%2
+            if flag_for_word_predictor == 0:
+                flag_for_word_predictor = (flag_for_word_predictor+1) % 2
                 words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
-            #cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), (0, 0, 0), -1)
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 1
-            cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
+            if flag_yes_no_selected == 0:
+                cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
+            else:
+                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
     
-        else:
-            
+        else:            
             # Text settings
             if(flag_for_word_predictor==1):
                 flag_for_word_predictor=(flag_for_word_predictor+1)%2
@@ -522,7 +585,7 @@ if Selection_Method != -1:
     
     
     
-    # -------------------------- NEXT WORD PREDICTION ----------------------
+    # ------------------------------------ NEXT WORD PREDICTION --------------------------------------
     train_data_for_next_word = friends_dataset_src
     first_possible_next_words = {}
     second_possible_next_words = {}
@@ -606,6 +669,9 @@ if Selection_Method != -1:
         global words
         global Next_Possible_Words
         global flag_for_word_predictor
+        global flag_yes_no_selected
+        global Selected_Yes_No
+        
         width = int(words_frame_width // 2)
         height = int(user_height // 5)
         if word_index % 2 == 0:
@@ -616,13 +682,17 @@ if Selection_Method != -1:
         th = 3
         
         if blank:
-            if(flag_for_word_predictor==0):
+            if(flag_for_word_predictor == 0):
                 flag_for_word_predictor=(flag_for_word_predictor+1)%2
                 words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
-            font_th = 1
-            cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
+            font_th = 1            
+            if flag_yes_no_selected == 0:
+                cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
+            else:                
+                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
     
         else:        
             # Text settings
@@ -702,9 +772,11 @@ if Selection_Method != -1:
         global app
         global app_opened
         global opened_apps
+        global frame_selector
         # print(opened_apps)
         if app not in opened_apps:
-            opened_apps.insert(0, app)
+            if app != 5:
+                opened_apps.insert(0, app)
             if app == 0:
                 pag.press('win',interval=0.25)
                 time.sleep(0.1)
@@ -714,7 +786,7 @@ if Selection_Method != -1:
                 pag.press('win',interval=0.25)
                 time.sleep(0.1)
                 pag.press('c')
-                pag.typewrite('hrome')      
+                pag.typewrite('hrome')
             elif app == 2:
                 pag.press('win',interval=0.25)
                 time.sleep(0.1)
@@ -725,11 +797,12 @@ if Selection_Method != -1:
                 time.sleep(0.1)
                 pag.press('c')
                 pag.typewrite('alculator')
-            elif app == 5:
-                pag.press('win',interval=0.25)
-                time.sleep(0.1)
-                pag.press('S')
-                pag.typewrite('ettings')
+            # elif app == 5:
+            #     frame_selector = 3
+            #     pag.press('win',interval=0.25)
+            #     time.sleep(0.1)
+            #     pag.press('S')
+            #     pag.typewrite('ettings')
             elif app == 4:
                 pag.press('win',interval=0.25)
                 time.sleep(0.1)
@@ -744,7 +817,7 @@ if Selection_Method != -1:
             elif app == 6:
                 root.destroy()
             
-            if app != 6:
+            if app != 6 and app != 5:
                 time.sleep(1)
                 pag.press('enter')
                 time.sleep(2)
@@ -867,12 +940,18 @@ if Selection_Method != -1:
         draw_words(1, False, True)
             
     def put_freq_options():
-        if len(opened_apps) != 0:
+        global app
+        global flag_yes_no_selected
+        
+        if flag_yes_no_selected == 1:
+            for i in range(len(yes_no_options.keys())):
+                draw_yes_no(i, False, False)
+        
+        elif len(opened_apps) != 0:
             for i in range(len(freq_options[opened_apps[0]].items())):
                 draw_freq_options(i, False, False)
         
         else:
-            #for i in range(8):
             draw_freq_options(1, False, True)
         
     
@@ -947,7 +1026,7 @@ if Selection_Method != -1:
             right_eye.append([x, y])
         left_eye = np.array(left_eye, np.int32)
         right_eye = np.array(right_eye, np.int32)
-        return left_eye, right_eye    
+        return left_eye, right_eye
     
     
     # ------------------------------------- Main Function Which Deals with everything ------------------------------
@@ -990,6 +1069,11 @@ if Selection_Method != -1:
         global Next_Possible_Words
         global flag_words_window
         global Selection_Method
+        global flag_yes_no_selected
+        global yes_no_array
+        global yes_no_options
+        global yes_no_label
+        global Selected_Yes_No
         
         _, frame = cap.read()
         frame = rescale_frame(frame, percent=50)
@@ -1008,10 +1092,6 @@ if Selection_Method != -1:
             blank_Keyboard()
             put_freq_options()
             put_words()
-            # if current_valid_word != "":
-            #     put_words()
-            # else:
-            #     blank_words()
             
             for i in range(len(options.keys())):
                 if i == selected_option:
@@ -1029,10 +1109,7 @@ if Selection_Method != -1:
             blank_Options()
             put_freq_options()
             global flag_app_to_menu
-            if current_valid_word != "":
-                put_words()
-            else:
-                blank_words()
+            put_words()
                 
             for i in range(icon_count):
                 if app == -1: # Future remove
@@ -1059,10 +1136,7 @@ if Selection_Method != -1:
             blank_Apps()
             blank_Options()
             put_freq_options()
-            if current_valid_word != "":
-                put_words()
-            else:
-                blank_words()
+            put_words()
         
             # Keyboard Stuff
             if select_keyboard_menu is True:
@@ -1230,20 +1304,39 @@ if Selection_Method != -1:
                         word_count = (word_count + 1) % (len(Next_Possible_Words))
             
         elif frame_selector == 4: # Frequent Options
-            if len(opened_apps) == 0:
-                frame_selector = 0
-            else:           
-                
-                for i in range(len(freq_options[opened_apps[0]].items())):
+            blank_Apps()
+            blank_Keyboard()
+            blank_Options()
+            # put_freq_options()
+            put_words()
+            
+            if flag_yes_no_selected == 1:
+                for i in range(len(yes_no_options.keys())):
                     if i == freq_count:
                         tmp_light = True
                     else:
                         tmp_light = False
-                    draw_freq_options(i, tmp_light, False)
+                    draw_yes_no(i, tmp_light, False)
                     
                 app_frames = (app_frames + 1) % (simulation_time + 1)
                 if app_frames == simulation_time:
-                    freq_count = (freq_count + 1) % (len(freq_options[opened_apps[0]].items()))
+                    freq_count = (freq_count + 1) % (len(yes_no_options.keys()))
+                    
+            else:
+                if len(opened_apps) == 0:
+                    frame_selector = 0
+                else:           
+                    
+                    for i in range(len(freq_options[opened_apps[0]].items())):
+                        if i == freq_count:
+                            tmp_light = True
+                        else:
+                            tmp_light = False
+                        draw_freq_options(i, tmp_light, False)
+                        
+                    app_frames = (app_frames + 1) % (simulation_time + 1)
+                    if app_frames == simulation_time:
+                        freq_count = (freq_count + 1) % (len(freq_options[opened_apps[0]].items()))
                 
                     
         else:
@@ -1251,11 +1344,7 @@ if Selection_Method != -1:
             blank_Keyboard()
             blank_Options()
             put_freq_options()
-            if current_valid_word != "":
-                put_words()
-            else:
-                blank_words()
-        
+            put_words()
         
         
         # Face Detection
@@ -1327,8 +1416,12 @@ if Selection_Method != -1:
                         
                     # App Selection Stuff
                     elif frame_selector == 1 and app == -1 and not app_opened: # Opens App if not already opened
-                        app = icon_index
-                        frame_selector = 0
+                        if icon_index == 5:    
+                            frame_selector = 4
+                            flag_yes_no_selected = 1
+                        else:
+                            app = icon_index
+                            frame_selector = 0
                     
                     # Keyboard Simulation Stuff
                     elif frame_selector == 2:
@@ -1402,23 +1495,37 @@ if Selection_Method != -1:
                     
                     # Frequent Options Stuff
                     elif frame_selector == 4:
-                        temp = freq_options[opened_apps[0]][freq_count][1]
-                        if temp == 'exit':
-                            frame_selector = 0
-                        else:
-                            if type(temp) is tuple:
-                                pag.hotkey(temp[0], temp[1])
+                        if flag_yes_no_selected == 1:
+                            print()
+                            temp = yes_no_options[freq_count]
+                            if temp == 'Exit':
+                                flag_yes_no_selected = 0
+                                frame_selector = 0
+                                # yes_no_label.config(text = "")
+                                # yes_no_label.update()
                             else:
-                                if ( temp == "call" ):
-                                    speak(text)
-                                    
-                                elif ( temp == "tab 6" ):
-                                    temp_split = temp.split()
-                                    
-                                    for ii in range (int(temp_split[1])): 
-                                        pag.press(temp_split[0])
+                                # yes_no_label.config(text = "User says "+temp)
+                                # yes_no_label.update()
+                                Selected_Yes_No = "User says "+temp
+                            
+                        else:
+                            temp = freq_options[opened_apps[0]][freq_count][1]
+                            if temp == 'exit':
+                                frame_selector = 0
+                            else:
+                                if type(temp) is tuple:
+                                    pag.hotkey(temp[0], temp[1])
                                 else:
-                                    pag.press(temp)
+                                    if ( temp == "call" ):
+                                        speak(text)
+                                        
+                                    elif ( temp == "tab 6" ):
+                                        temp_split = temp.split()
+                                        
+                                        for ii in range (int(temp_split[1])): 
+                                            pag.press(temp_split[0])
+                                    else:
+                                        pag.press(temp)
     
     
         
@@ -1455,7 +1562,13 @@ if Selection_Method != -1:
         words_label.Pred_Words_tk = Pred_Words_tk
         words_label.configure(image = Pred_Words_tk)
         
-        Freq_Options = Image.fromarray(Frequent_Options, 'RGB')
+        if flag_yes_no_selected == 0:
+            Freq_Options = Image.fromarray(Frequent_Options, 'RGB')
+        else:
+            Freq_Options = Image.fromarray(yes_no_array, 'RGB')
+            # Yes_No_tk = Image.fromarray(yes_no_label, 'RGB')
+            # Yes_No_ttk = ImageTk.PhotoImage(image = Yes_No_tk)
+            
         Freq_Options_tk = ImageTk.PhotoImage(image = Freq_Options)
         freq_option_label.Freq_Options_tk = Freq_Options_tk
         freq_option_label.configure(image = Freq_Options_tk)

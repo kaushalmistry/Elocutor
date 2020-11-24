@@ -33,7 +33,7 @@ uniform_color="#3b6dc7"
 
 root1.configure(background=uniform_color)
 
-photo5 = tk.PhotoImage(file = r"images/logo - Copy.png")
+photo5 = tk.PhotoImage(file = r"E:\Project\Elocutor\Application\Images\logo.png")
 photoimage5 = photo5.subsample(1, 1)
 l5 = tk.Label(root1,image = photoimage5,background=uniform_color)
 l5.pack()
@@ -288,7 +288,7 @@ if Selection_Method != -1:
     
     #-------------------------- Labels in that frame to show real time videos and simulations -------------------------
     
-    logo= cv2.imread("Icons/logos_pollos.png")
+    logo= cv2.imread("E:\Project\Elocutor\Application\Icons\logos_pollos.png")
     fx_val = 0.35 - 0.05*index_res
     fy_val = 0.35 - 0.05*index_res
     logo =   cv2.resize(logo, (0, 0), fx = fx_val, fy = fy_val)  
@@ -333,7 +333,7 @@ if Selection_Method != -1:
     
     # Landmarks Detector
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor("../Face_Landmarks/shape_predictor_68_face_landmarks.dat")
+    predictor = dlib.shape_predictor("E:\Project\Elocutor\Face_Landmarks\shape_predictor_68_face_landmarks.dat")
     #predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     
     # User Video
@@ -627,7 +627,7 @@ if Selection_Method != -1:
     icons = []
     
     for i in images.values():
-        ele=cv2.imread("Icons/"+i+".png")
+        ele=cv2.imread("E:\\Project\\Elocutor\\Application\\Icons\\"+i+".png")
         ele=cv2.resize(ele, (apps_icon_width, apps_icon_height))
         icons.append(ele)
     
@@ -1443,8 +1443,7 @@ if Selection_Method != -1:
         user = Image.fromarray(gray)
         user_tk = ImageTk.PhotoImage(image=user)
         user_label.user_tk = user_tk
-        user_label.configure(image=user_tk)
-    
+        user_label.configure(image=user_tk)  
     
     
     
