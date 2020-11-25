@@ -46,7 +46,7 @@ eyebrows_src  = resource_path("images/eyebrows3.png")
 exit_src  = resource_path("images/exit3.png")
 
 logos_pollos_src = resource_path("Icons/logos_pollos.png")
-face_landmarks_module_src = resource_path("../Face_Landmarks/shape_predictor_68_face_landmarks.dat")
+face_landmarks_module_src = resource_path("Face_Landmarks/shape_predictor_68_face_landmarks.dat")
 friends_dataset_src = resource_path("Files/friends_data.txt")
 
 
@@ -198,6 +198,7 @@ if Selection_Method != -1:
     Text_Color_Hash = "#eaeaea"
     Text_Color = (234, 234, 234)
     Border_Color_Hash = "#757575"
+    Border_Color = (117, 117, 117)
     
     # Variables used in function to Open App
     icon_index = 0
@@ -867,19 +868,19 @@ if Selection_Method != -1:
     # ------------------------------------------------- Keyboard Section -------------------------------------------
     keyboard = np.full((Keyboard_height*6+Keyboard_gap*2, Keyboard_width*16+Keyboard_gap, 3),Overall_Color, np.uint8)
     
-    keys_set_1 = {0:' ',1:'f1',2:'f2',3:'f3',4:'f4',5:'f5',6:'f6',7:" ",8: " ",
-                  9:'0', 10:'1', 11:'2',12: '3',13: '4',14: '5',15: '6',16: " ",
-                  17: "tab", 18: "q", 19: "w", 20: "e", 21: "r",22: "t",23: " ",24: " ",
-                  25: "capslock", 26: "a", 27: "s", 28: "d",29: "f",30: "g",31: " ",32: " ",
-                  33: "shiftleft",34: "z",35: "x",36: "c",37: "v",38: " ",39: " ",40: " ",
-                  41: "ctrlleft",42: "fn",43: "winleft",44: "altleft",45: "space", 46:" ", 47:"esc"}
+    keys_set_1 = {0:'',1:'f1',2:'f2',3:'f3',4:'f4',5:'f5',6:'f6',7:"",8: "",
+                  9:'0', 10:'1', 11:'2',12: '3',13: '4',14: '5',15: '6',16: "Exit",
+                  17: "tab", 18: "q", 19: "w", 20: "e", 21: "r",22: "t",23: "Exit",24: "",
+                  25: "capslock", 26: "a", 27: "s", 28: "d",29: "f",30: "g",31: "",32: "",
+                  33: "shiftleft",34: "z",35: "x",36: "c",37: "v",38: "",39: "",40: "Exit",
+                  41: "ctrlleft",42: "fn",43: "winleft",44: "altleft",45: "space", 46:"", 47:"esc"}
                   
-    keys_set_2 = {0:'f7',1:'f8',2:'f9',3:'f10',4:'f11',5:'f12',6:'del',7: " ",8: " ",
-                  9:'7', 10:'8', 11:'9',12: '0',13: '-',14: '=',15: 'backspace',16: " ",
+    keys_set_2 = {0:'f7',1:'f8',2:'f9',3:'f10',4:'f11',5:'f12',6:'del',7: "",8: "",
+                  9:'7', 10:'8', 11:'9',12: '0',13: '-',14: '=',15: 'backspace',16: "",
                   17: "y", 18: "u", 19: "i", 20: "o", 21: "p",22: "[",23: "]",24:"|",
-                  25: "h", 26: "j", 27: "k",28: "l",29: ";",30: "'",31: "enter",32: " ",
-                  33: "b",34: "n",35: "m",36: ",",37: ".",38: "/",39: "shiftright",40: " ",
-                  41:"altright",42: "ctrlright",43:"up",44:"down",45:"left",46:"right",47:" "}
+                  25: "h", 26: "j", 27: "k",28: "l",29: ";",30: "'",31: "enter",32: "Exit",
+                  33: "b",34: "n",35: "m",36: ",",37: ".",38: "/",39: "shiftright",40: "",
+                  41:"altright",42: "ctrlright",43:"up",44:"down",45:"left",46:"right",47:"Exit"}
     
     
     # Function For Keys on Keyboard
@@ -1035,8 +1036,11 @@ if Selection_Method != -1:
         
         hor_line_length = hypot((left_point[0] - right_point[0]), (left_point[1] - right_point[1]))
         ver_line_length = hypot((center_top[0] - center_bottom[0]), (center_top[1] - center_bottom[1]))
-        
-        ratio = hor_line_length / ver_line_length
+
+        if( ver_line_length == 0):
+            ratio = 7
+        else:
+            ratio = hor_line_length / ver_line_length
         return ratio
     
     def eyes_contour_points(facial_landmarks):
@@ -1406,8 +1410,8 @@ if Selection_Method != -1:
             
             elif Selection_Method == 2:
                 left_eye, right_eye = eyes_contour_points(landmarks)
-                cv2.polylines(gray, [left_eye], True, (0, 0, 0), 2)
-                cv2.polylines(gray, [right_eye], True, (0, 0, 0), 2)
+                cv2.polylines(gray, [left_eye], True, (189, 185, 185), 2)
+                cv2.polylines(gray, [right_eye], True, (189, 185, 185), 2)
                 
                 
                 left_eye_ratio = get_blinking_ratio([36, 37, 38, 39, 40, 41], landmarks)
@@ -1474,6 +1478,9 @@ if Selection_Method != -1:
                             select_line_menu = False
                         
                         else:
+                            if( active_letter ) == "Exit":
+                                frame_selector = 0
+                                continue
                             pag.press(active_letter)
                             select_keyboard_menu = True
                             line_selected = 0
