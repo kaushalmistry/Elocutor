@@ -553,34 +553,41 @@ if Selection_Method != -1:
             font_scale = Universal_font_size
             font_th = 1
             if flag_yes_no_selected == 0:
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Overall_Color, font_th)
                 cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
             else:
                 words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
                 cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
     
-        else:            
-            # Text settings
-            if(flag_for_word_predictor==1):
-                flag_for_word_predictor=(flag_for_word_predictor+1)%2
-                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
-            if word_index < len(predicted_words):
-                text = predicted_words[word_index][0]
-            else:
-                text = ""
+        else:
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 1
-            text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
-            width_text, height_text = text_size[0], text_size[1]
-            text_x = int((width - width_text) / 2) + x
-            text_y = int((height + height_text) / 2) + y
-            
-            if word_select is True:
-                cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), selection_color, -1)
-                cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
+            if flag_yes_no_selected == 1:                
+                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
             else:
-                cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), Overall_Color, -1)
-                cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Overall_Color, font_th)
+                # Text settings
+                if(flag_for_word_predictor==1):
+                    flag_for_word_predictor=(flag_for_word_predictor+1)%2
+                    words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                if word_index < len(predicted_words):
+                    text = predicted_words[word_index][0]
+                else:
+                    text = ""
+                
+                text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
+                width_text, height_text = text_size[0], text_size[1]
+                text_x = int((width - width_text) / 2) + x
+                text_y = int((height + height_text) / 2) + y
+                
+                if word_select is True:
+                    cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), selection_color, -1)
+                    cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
+                else:
+                    cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), Overall_Color, -1)
+                    cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
     
     
     
@@ -689,34 +696,41 @@ if Selection_Method != -1:
             font_scale = Universal_font_size
             font_th = 1            
             if flag_yes_no_selected == 0:
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Overall_Color, font_th)
                 cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
             else:                
                 words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
                 cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
     
-        else:        
-            # Text settings
-            if (flag_for_word_predictor == 1):
-                flag_for_word_predictor = (flag_for_word_predictor+1)%2
-                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
-            if word_index < len(Next_Possible_Words):
-                text = Next_Possible_Words[word_index]
-            else:
-                text = ""
+        else:
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 1
-            text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
-            width_text, height_text = text_size[0], text_size[1]
-            text_x = int((width - width_text) / 2) + x
-            text_y = int((height + height_text) / 2) + y
-            
-            if word_select is True:
-                cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), selection_color, -1)
-                cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
+            if flag_yes_no_selected == 1:         
+                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
             else:
-                cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), Overall_Color, -1)
-                cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
+                cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Overall_Color, font_th)
+                # Text settings
+                if (flag_for_word_predictor == 1):
+                    flag_for_word_predictor = (flag_for_word_predictor+1)%2
+                    words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                if word_index < len(Next_Possible_Words):
+                    text = Next_Possible_Words[word_index]
+                else:
+                    text = ""
+                
+                text_size = cv2.getTextSize(text, font_letter, font_scale, font_th)[0]
+                width_text, height_text = text_size[0], text_size[1]
+                text_x = int((width - width_text) / 2) + x
+                text_y = int((height + height_text) / 2) + y
+                
+                if word_select is True:
+                    cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), selection_color, -1)
+                    cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, (51, 51, 51), font_th)
+                else:
+                    cv2.rectangle(words, (x + th, y + th), (x + width - th, y + height - th), Overall_Color, -1)
+                    cv2.putText(words, text, (text_x, text_y), font_letter, font_scale, Text_Color, font_th)
     
     
     
@@ -1501,6 +1515,7 @@ if Selection_Method != -1:
                             if temp == 'Exit':
                                 flag_yes_no_selected = 0
                                 frame_selector = 0
+                                Selected_Yes_No = ""
                                 # yes_no_label.config(text = "")
                                 # yes_no_label.update()
                             else:
