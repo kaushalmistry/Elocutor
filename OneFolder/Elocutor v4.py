@@ -322,7 +322,9 @@ if Selection_Method != -1:
     new_word_added = False
     word_count = 0
     valid_keys = ['caps', 'shift', 'ctrl']
-    Next_Possible_Words = []  
+    Next_Possible_Words = []
+    
+    
     
     
     
@@ -453,15 +455,12 @@ if Selection_Method != -1:
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 0
-
-            if(flag_for_freq_options == 1):
-                flag_for_freq_options = 0                
-                Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
             cv2.putText(Frequent_Options, "Frequent Options", (user_width // 5,(int(user_height//5)*4)//2), font_letter, font_scale, Text_Color, font_th)
             
         else:
-            if (flag_for_freq_options == 0):
-                flag_for_freq_options += 1
+            if(flag_for_freq_options==0):
+                flag_for_freq_options+=1
+                
                 Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
             # Text settings
             text = freq_options[opened_apps[0]][freq_index][0]
@@ -506,15 +505,13 @@ if Selection_Method != -1:
             font_letter = cv2.FONT_HERSHEY_COMPLEX
             font_scale = Universal_font_size
             font_th = 0
-            # if(flag_for_freq_options == 1):
-            #     flag_for_freq_options += 1                
-            #     Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
             cv2.putText(yes_no_array, "Frequent Options", (user_width // 4,(int(user_height//4)*2)//2), font_letter, font_scale, Text_Color, font_th)
             
         else:
-            if(flag_for_freq_options == 0):
-                flag_for_freq_options += 1
-                Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
+            if(flag_for_freq_options==0):
+                flag_for_freq_options+=1
+                
+                # Frequent_Options = np.full((int(user_height//5)*4, int(user_width), 3),Overall_Color, np.uint8)
             # Text settings
             text = yes_no_options[freq_index]
             font_letter = cv2.FONT_HERSHEY_COMPLEX
@@ -566,7 +563,7 @@ if Selection_Method != -1:
                 cv2.putText(words, "Word Completion and Prediction", (int(words_frame_width)// 10,(int(user_height))//2), font_letter, font_scale, Text_Color, font_th)
             else:            
                 words_yes_no = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
-                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                # words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
                 cv2.putText(words_yes_no, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
     
         else:
@@ -575,7 +572,7 @@ if Selection_Method != -1:
             font_th = 1
             if flag_yes_no_selected == 1:                
                 words_yes_no = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
-                words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
+                # words = np.full((int(user_height), int(words_frame_width), 3),Overall_Color, np.uint8)
                 cv2.putText(words_yes_no, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Text_Color, font_th)
             else:
                 # cv2.putText(words, Selected_Yes_No, (int(words_frame_width) // 7,(int(user_height))//2), font_letter, 1.0 - 0.1*(index_res), Overall_Color, font_th)
@@ -979,7 +976,8 @@ if Selection_Method != -1:
         
         elif len(opened_apps) != 0:
             for i in range(len(freq_options[opened_apps[0]].items())):
-                draw_freq_options(i, False, False)        
+                draw_freq_options(i, False, False)
+        
         else:
             draw_freq_options(1, False, True)
         
@@ -1359,7 +1357,8 @@ if Selection_Method != -1:
             else:
                 if len(opened_apps) == 0:
                     frame_selector = 0
-                else:                    
+                else:           
+                    
                     for i in range(len(freq_options[opened_apps[0]].items())):
                         if i == freq_count:
                             tmp_light = True
@@ -1536,12 +1535,17 @@ if Selection_Method != -1:
                     # Frequent Options Stuff
                     elif frame_selector == 4:
                         if flag_yes_no_selected == 1:
+                            print()
                             temp = yes_no_options[freq_count]
                             if temp == 'Exit':
                                 flag_yes_no_selected = 0
                                 frame_selector = 0
                                 Selected_Yes_No = ""
+                                # yes_no_label.config(text = "")
+                                # yes_no_label.update()
                             else:
+                                # yes_no_label.config(text = "User says "+temp)
+                                # yes_no_label.update()
                                 Selected_Yes_No = "User says "+temp
                             
                         else:
@@ -1606,6 +1610,8 @@ if Selection_Method != -1:
             Freq_Options = Image.fromarray(Frequent_Options, 'RGB')
         else:
             Freq_Options = Image.fromarray(yes_no_array, 'RGB')
+            # Yes_No_tk = Image.fromarray(yes_no_label, 'RGB')
+            # Yes_No_ttk = ImageTk.PhotoImage(image = Yes_No_tk)
             
         Freq_Options_tk = ImageTk.PhotoImage(image = Freq_Options)
         freq_option_label.Freq_Options_tk = Freq_Options_tk
