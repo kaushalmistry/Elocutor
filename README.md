@@ -47,11 +47,9 @@ Libraries:
 
 [04] Histogram and Gradients in HOG: https://www.learnopencv.com/histogram-of-oriented-gradients/
 
-[05] SVM Classifier: https://www.bogotobogo.com/python/scikit-
-learn/scikit_machine_learning_Support_Vector_Machines_SVM.php
+[05] SVM Classifier: https://www.bogotobogo.com/python/scikit-learn/scikit_machine_learning_Support_Vector_Machines_SVM.php
 
-[06] Friends Dataset:
-https://raw.githubusercontent.com/shilpibhattacharyya/Friends_Analysis/master/friends_dataset.csv
+[06] Friends Dataset: https://raw.githubusercontent.com/shilpibhattacharyya/Friends_Analysis/master/friends_dataset.csv
 
 [07] ACAT Developers Guide: https://01.org/acat/documentation
 
