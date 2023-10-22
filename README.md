@@ -1,6 +1,7 @@
 
 # Elocutor: An Assistant for Specially Abled 
 ![Elocutor Logo](images/wheelchair_person.png)
+<img src="./images/images/wheelchair_person.png" width="100" height="100">
 Assistant for physically abled. The objective is to make people with different MND diseases accessible to their computers.
 
 ## Motivation 🔆
@@ -11,10 +12,9 @@ researching the topic we were able to get some direction from the former softwar
 capabilities and flaws. We will try make an application accessible to all and make it user friendly.
 
 ## User Diagram 👩‍💻
-![Elocutor User Diagram](images/user-diagram-elocutor.png)
+<img src="./images/user-diagram-elocutor.png" width="300" height="150">
 ## User Interface 🖥
-![Elocutor User Interface](images/elocutor-UI.png)
-
+<img src="./images/images/elocutor-UI.png" width="300" height="150">
 ## Project Modules 🏗
 * Different Detection Modules :
     * Eye-Detection
