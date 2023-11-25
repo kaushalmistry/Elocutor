@@ -38,6 +38,10 @@ Libraries:
 * Pyttsx
 * PIL
 
+## See it working
+[<img src="https://github.com/kaushalmistry/Elocutor/blob/master/images/elocutorThumbnail.png" width="50%">](https://youtu.be/jtVkNA6urnc")
+
+
 ## References 📑
 [01] Dlib Documentation: http://dlib.net/
 
